@@ -1,176 +1,138 @@
-
-// Code 1-------------------------------------------------------------------------------
-
-const { readFileSync, writeFileSync } = require("fs");
-
-const fs = require("fs");
-
-// const first = readFileSync("./content/first.txt", "utf8");
-// const second = readFileSync("./content/second.txt", "utf8");
-
-const first = readFileSync("./content/first.txt", "utf8");
-const second = readFileSync("./content/second.txt", "utf8");
-
-console.log(first, second);
+//Code 1
+// What is a promise? What are promises used for?  What are pro/cons to using a promise? 
+//  Please code some examples of promises to show to the class. Make sure to go into detail 
+//  as you explain your code to the class.
 
 
 
-//Practice on how to connect to data base
-writeFileSync(
-  "./content/result-sync.txt",
-  `Here is the result : ${first}, ${second}`,
-  { flag: "a" } 
-);
+// A promise is an object in JavaScript that represents the eventual completion or failure of an asynchronous operation.
+//  It is commonly used for handling asynchronous operations such as fetching data from a server, making AJAX requests, or 
+//  executing time-consuming tasks that may take some time to complete. 
+// Promises provide a way to handle asynchronous operations in a more structured and readable manner.
 
-writeFileSync(
-  "./content/result-sync.txt",
-  `Here is the result : ${first}, ${second}`,
-  { flag: "a" } //Appends the first and sendond text to the the result-sync file
-);
+// Pros: Readalibility, Error Handaling, COmpisitoon, Avoiding Calback hell
+// COns: Browser Compabilitty, Learning Curve
+
+function fetchData() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const data = { id: 1, name: "John Doe" };
+      resolve(data); // Resolving the promise with the data
+    }, 2000);
+  });
+}
+
+fetchData()
+  .then((data) => {
+    console.log("Data:", data);
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
 
 
-// Code 2-------------------------------------------------------------------------------
 
-//deconstructed object
-const {readFile, writeFile}  = require('fs');
-console.log('start');
-readFile("./content/first.txt", "utf8", (err, result) => {
-  if (err) {
-    ///Will console log err message if an error occurs
-    console.log(err);
-    return;
+//   Codee 2
+
+// What is a callback? What is callback hell? Why does callback hell occur and why should we avoid callback hell?  
+// Please code an example
+//  of callback hell to show to the class. Make sure to go into detail as you explain your code to the class.
+
+// A callback is a function that is passed as an argument to another function and is executed at a later
+//  point in time or when a certain event occurs. Callbacks are commonly used in JavaScript to handle asynchronous operations, 
+//  such as making AJAX requests or performing file I/O.
+
+// Callback hell refers to a situation where multiple nested callbacks are used, resulting in code that is difficult to read and maintain.
+//  This typically occurs when dealing
+// with multiple asynchronous operations that depend on each other's results.
+
+function greet(name, callback) {
+  const greeting = `Hello, ${name}!`;
+  callback(greeting);
+}
+
+function printMessage(message) {
+  console.log(message);
+}
+
+greet("John", printMessage);
+
+
+// Coding Problem 3
+
+// The “this” keyword works differently in arrow functions vs regularly declared functions.
+//   Explain how the “this” keyword works differently in arrow functions vs normal functions.
+//    Write some code that shows that you understand the difference between how the “this” keyword is used.
+//      Make sure to go into detail as you explain your code to the class.
+
+
+// Inside a regular function, the value of this can be influenced by:
+
+// Global context: If the function is called without any explicit context, this refers to the global object (e.g., window in browsers, global in Node.js).
+
+// Object method context: When a function is called as a method of an object, this refers to the object itself.
+
+// Arrow Functions:
+// Arrow functions, introduced in ES6, do not have their own binding of this. Instead, they lexically capture the this value from the surrounding code.
+// The lexical scoping of this in arrow functions means that the value of this inside an arrow function is determined by the surrounding scope where the arrow 
+// function is defined, rather than how it is called.
+
+const person = {
+  name: 'John',
+  greet: function() {
+    setTimeout(() => {
+      console.log(`Hello, ${this.name}!`);
+    }, 1000);
   }
-  const first = result;
-  console.log(result);
-  readFile("./content/second.txt", "utf8", (err, result) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    const second = result;
-    console.log(result);
-    writeFile(
-      "./content/result-async.txt",
-      //Will wriite this text in the result-async.txt folder if it completes
-      `Here is the result : ${first}, ${second}`,
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        console.log("done with the task");
-      }
-    );
-  });
-});
-
-console.log("starting next task");
-
-
-
-// Code 3-------------------------------------------------------------------------------
-
-//This is an example of a function using XMLHttpRequest 
-//This was used before ES6 fetch 
-
-
-const getTodos = () => {
-  const request = new XMLHttpRequest();
-
-  request.addEventListener("readystatechange", () => {
-    //This will console.log a 200 status state if the the response is succesful
-    if (request.readyState === 4 && request.status === 200) {
-      console.log(request.responseText);
-    } else if (request.readyState === 4) {
-      console.log("could not fetch the data");
-    }
-  });
-//Here we are comanding the request to work
-  request.open("GET", "https://jsonplaceholder.typicode.com/todos/");
-  request.send();
 };
-//Here we call the request twice
-getTodos();
-getTodos();
+
+person.greet(); // Output: Hello, John!
+
+// Coding Problem 4
+
+
+// Using only the filter method on the numbers array, create a function that returns a new array that only contains the numbers divisible by both 3 and 6 but NOT 9. 
+
+// const numbers = [48, 20, 18, 7, 12,9, 8,10,12, 96, 3,36,51];
+
+
+const numbers = [48, 20, 18, 7, 12, 9, 8, 10, 12, 96, 3, 36, 51];
+
+function filterArray(numbers) {
+  return numbers.filter(num => num % 3 === 0 && num % 6 === 0 && num % 9 !== 0);
+}
+
+const result = filterArray(numbers);
+console.log(result); // Output: [48, 12, 36]
 
 
 
-// Code 4-------------------------------------------------------------------------------
+// Coding Problem 5
+// What is a async/await? Why is async/await useful? 
+//  What are pro/cons to using async/await?  Please code some examples of async/await to show to the class. 
+//  Make sure to go into detail as you explain your code to the class.
 
+// Async/await is useful for the following reasons: Readability and Maintainability,Error Handling,Promise Composition,Debugging
 
-// validation.js;   
-
-//another deconstructed ponject so we can use express
-const { check } = require("express-validator");
-exports.signupValidation = [
-  check("name", "Name is requied").not().isEmpty(),
-  check("email", "Please include a valid email")
-    .isEmail()
-    .normalizeEmail({ gmail_remove_dots: true }),
-  check("password", "Password must be 6 or more characters").isLength({
-    min: 6,
-  }),
-];
-exports.loginValidation = [
-  check("email", "Please include a valid email")
-    .isEmail()
-    .normalizeEmail({ gmail_remove_dots: true }),
-  check("password", "Password must be 6 or more characters").isLength({
-    min: 6,
-  }),
-];
-
-
-
-// Server.js file
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const { signupValidation, loginValidation } = require('./validation.js');
-const app = express();
-app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-   extended: true
-}));
-app.use(cors());
-app.get("/", (req, res) => {
-  res.send("Node js file upload rest apis");
-});
-app.post("/register", signupValidation, (req, res, next) => {
-  // your registration code
-});
-app.post("/login", loginValidation, (req, res, next) => {
-  // your login code
-});
-// Handling Errors
-app.use((err, req, res, next) => {
-  // console.log(err);
-  err.statusCode = err.statusCode || 500;
-  err.message = err.message || "Internal Server Error";
-  res.status(err.statusCode).json({
-    message: err.message,
+//Example
+function fetchData() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const data = { id: 1, name: "John Doe" };
+      resolve(data);
+    }, 2000);
   });
-});
-app.listen(3000, () => console.log("Server is running on port 3000"));
+}
 
-
-// Code 5-------------------------------------------------------------------------------
-
-var mysql = require("mysql");
-var connection = mysql.createConnection({
-  host: "localhost",
-  user: "your username",
-  password: "your password",
-  database: "your database name",
-});
-connection.connect(function (error) {
-  if (!!error) {
-    console.log(error);
-  } else {
-    console.log("Connected!:)");
+async function getData() {
+  try {
+    const data = await fetchData();
+    console.log("Data:", data);
+  } catch (error) {
+    console.error("Error:", error);
   }
-});
-module.exports = connection;
+}
+
+getData();
+
+

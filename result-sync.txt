@@ -1,2 +1,0 @@
-Here is the result : Hello, I am the first file”., “Hello, I am the second file”.
-Here is the result : Hello, I am the first file”., “Hello, I am the second file”.
